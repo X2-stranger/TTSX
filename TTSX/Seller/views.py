@@ -171,3 +171,19 @@ def logout(request):
         response.delete_cookie(key)
     del request.session["username"]
     return response
+
+
+# 个人主页
+@loginValid
+def personal_info(request):
+    user_id = request.COOKIES.get("user_id")
+    user = LoginUser.objects.get(id=int(user_id))
+    if request.method == "POST":
+        user.username = request.POST.get("username")
+        user.gender = request.POST.get("gender")
+        user.age = request.POST.get("age")
+        user.phone_number = request.POST.get("phone_number")
+        user.address = request.POST.get("address")
+        user.photo = request.FILES.get("photo")
+        user.save()
+    return render(request, "seller/personal_info.html", locals())
