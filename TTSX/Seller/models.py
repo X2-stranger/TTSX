@@ -18,3 +18,24 @@ class Valid_Code(models.Model):
     code_user = models.EmailField()
     code_time = models.DateTimeField(auto_now=True)
     code_state = models.IntegerField(default=0)
+
+
+class GoodsType(models.Model):
+    type_label = models.CharField(max_length=32)
+    type_description = models.TextField()
+    picture = models.ImageField(upload_to="images")
+
+
+class Goods(models.Model):
+    goods_number = models.CharField(max_length=11)
+    goods_name = models.CharField(max_length=32)
+    goods_price = models.FloatField()
+    goods_count = models.IntegerField()
+    goods_location = models.CharField(max_length=254)
+    goods_safe_date = models.IntegerField()
+    goods_pro_time = models.DateField(auto_now=True)
+    goods_status = models.IntegerField()  # 0为下架，1 为在售
+    goods_description = models.TextField(default="便宜且实惠")
+    picture = models.ImageField(upload_to="images", default="default_photo.jpg")
+    goods_type = models.ForeignKey(to=GoodsType, on_delete=models.CASCADE, default=1)
+    goods_store = models.ForeignKey(to=LoginUser, on_delete=models.CASCADE, default=1)
